@@ -227,9 +227,14 @@ def main():
     options, args = parser.parse_args()
 
     # set max execution time
-    # exit with status errno.ETIME if timeout is reached
+    # exit with appropriate status if timeout is reached
+    if sys.platform.startswith('freebsd'):
+        exit_code = errno.ETIMEDOUT
+    else:
+        exit_code = errno.ETIME
+
     timeout = float(options.timeout) / 1000
-    timer = threading.Timer(timeout, lambda: sys.exit(errno.ETIME))
+    timer = threading.Timer(timeout, lambda: sys.exit(exit_code))
     timer.start()
 
     output = vcprompt(options)
