@@ -1,5 +1,11 @@
-1.0.2 (????-??-??)
+2.0.0 (2018-09-18)
 ------------------
+
+* Fixed: Reading current branch for Fossil SCM.
+* Fixed: Timeout exit code on FreeBSD.
+
+Before Abandoned By Original Author
+-----------------------------------
 
 * Added: -t/--timeout option for limiting max execution time
 * Fixed: '%m', '%u' tokens in Bazaar
