@@ -384,12 +384,16 @@ def fossil(options):
         try:
             conn = None
             try:
-                query = """SELECT value FROM tagxref WHERE rid =
-                           (SELECT rid FROM blob WHERE uuid LIKE '%s%%')
-                           AND value is not NULL LIMIT 1 """ % sha
-                conn = sqlite3.connect(repository)
+                query = "SELECT value FROM vvar WHERE name='checkout' LIMIT 1"
+                conn = sqlite3.connect(options.file)
                 c = conn.cursor()
                 c.execute(query)
+                checkout_rid = c.fetchone()[0]
+
+                query = "SELECT value FROM tagxref WHERE tagid=8 AND rid=? LIMIT 1"
+                conn = sqlite3.connect(repository)
+                c = conn.cursor()
+                c.execute(query, (checkout_rid,))
                 branch = c.fetchone()[0]
             except (sqlite3.OperationalError, TypeError):
                 pass
